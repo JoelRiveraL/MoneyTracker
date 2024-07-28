@@ -1,15 +1,20 @@
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
-import { Metadata } from "next";
+import { useState, useEffect } from 'react';
 import DefaultLayout from "../components/Layouts/DefaultLayout";
 
-export const metadata: Metadata = {
-  title: "Next.js Settings | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Settings page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
-};
 
 const usersettings = () => {
+    const [user, setUser] = useState<any>(null);
+
+    useEffect(() => {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        setUser(JSON.parse(userData));
+      } else {
+        window.location.href = '/login';
+      }
+    }, []);
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
@@ -64,8 +69,7 @@ const usersettings = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Joel Rivera"
-                          defaultValue="Joel Rivera"
+                          defaultValue={user?.name + " " + user?.lastname}
                         />
                       </div>
                     </div>
@@ -126,12 +130,12 @@ const usersettings = () => {
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="usuario@example.com"
-                        defaultValue="joelal3033@gmail.com"
+                        defaultValue={user?.email}
                       />
                     </div>
                   </div>
 
+                    {/* <!--
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -148,6 +152,7 @@ const usersettings = () => {
                       defaultValue="TheA1esso"
                     />
                   </div>
+                  --> */}
 
                   <div className="mb-5.5">
                     <label
@@ -227,6 +232,7 @@ const usersettings = () => {
               <div className="p-7">
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
+                    {/* <!--
                     <div className="h-14 w-14 rounded-full">
                       <Image
                         src={"/images/user/user-03.png"}
@@ -235,6 +241,7 @@ const usersettings = () => {
                         alt="Usuario"
                       />
                     </div>
+                    --> */}
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
                         Edita tu foto

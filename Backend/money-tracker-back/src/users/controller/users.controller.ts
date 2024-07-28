@@ -21,5 +21,4 @@ export class UsersController {
     async login(@Body() userData: any): Promise<any> {
         return this.usersService.login(userData);
     }
-
 }

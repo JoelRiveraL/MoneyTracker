@@ -9,7 +9,7 @@ const Index: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     try {
       const response = await fetch('http://localhost:3000/users/login', {
         method: 'POST',
@@ -18,12 +18,12 @@ const Index: React.FC = () => {
         },
         body: JSON.stringify({ email, password }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         setSuccess('Autenticación exitosa');
-        // Redirigir a la página de inicio o a otra página según la autenticación
+        localStorage.setItem('user', JSON.stringify(data));
         window.location.href = '/home';
       } else {
         setError(data.message || 'Error en la autenticación');
@@ -33,6 +33,7 @@ const Index: React.FC = () => {
       setError('Error datos incorrectos.');
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">

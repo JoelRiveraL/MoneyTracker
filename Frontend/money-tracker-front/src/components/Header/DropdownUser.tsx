@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "../ClickOutside";
+import { emitWarning } from "process";
 
 const DropdownUser = () => {
+
+    const [user, setUser] = useState<any>(null);
+
+    useEffect(() => {
+      // Recuperar datos del localStorage
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        setUser(JSON.parse(userData));
+      } else {
+        window.location.href = '/login';
+      }
+    }, []);
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
@@ -15,11 +29,12 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Joel Rivera
+            {user?.name} {user?.lastname}
           </span>
-          <span className="block text-xs">Ing. Software</span>
+          <span className="block text-xs">{user?.email}</span>
         </span>
 
+        {/* <!--
         <span className="h-12 w-12 rounded-full">
           <Image
             width={112}
@@ -32,6 +47,8 @@ const DropdownUser = () => {
             alt="User"
           />
         </span>
+        --> */}
+        
 
         <svg
           className="hidden fill-current sm:block"
@@ -50,7 +67,6 @@ const DropdownUser = () => {
         </svg>
       </Link>
 
-      {/* <!-- Dropdown Start --> */}
       {dropdownOpen && (
         <div
           className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
