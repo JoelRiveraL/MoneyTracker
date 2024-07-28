@@ -7,7 +7,7 @@ const paymentData: Payment[] = [
     price: 200.0,
     description: "Beca de la universidad",
     type: "Ingreso",
-    date: `Jan 13,2023`,
+    date: `Feb 13,2023`,
     status: "Pagado",
   },
   {
@@ -15,7 +15,7 @@ const paymentData: Payment[] = [
     price: 1350.0,
     description: "Pago por trabajo en la empresa Google",
     type: "Ingreso",
-    date: `Jan 13,2023`,
+    date: `Ene 13,2023`,
     status: "Pagado",
   },
   {
@@ -23,7 +23,7 @@ const paymentData: Payment[] = [
     price: 99.0,
     description: "Apuesta en el partido de futbol Ecuador vs Argentina",
     type: "Ingreso",
-    date: `Jan 13,2023`,
+    date: `Ene 13,2023`,
     status: "Pendiente",
   },
   {
@@ -31,7 +31,7 @@ const paymentData: Payment[] = [
     price: 59.0,
     description: "Compra de ropa en el centro comercial",
     type: "Egreso",
-    date: `Jan 13,2023`,
+    date: `Ene 13,2023`,
     status: "En Curso",
   },
 ];
@@ -44,22 +44,22 @@ const TableThree = () => {
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
-                Name
+                Nombre
               </th>
               <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
-                Description
+                Descripción
               </th>
               <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
-                Type
+                Tipo
               </th>
               <th className="px-4 py-4 font-medium text-black dark:text-white">
-                Date
+                Fecha
               </th>
               <th className="px-4 py-4 font-medium text-black dark:text-white">
-                State
+                Estado
               </th>
               <th className="px-4 py-4 font-medium text-black dark:text-white">
-                Action
+                Acción
               </th>
             </tr>
           </thead>

@@ -32,17 +32,17 @@ const FormFilter = () => {
             <div className="flex flex-col gap-5.5 p-6.5  grid grid-cols-1 gap-9 sm:grid-cols-4">
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Name of payment
+                  Nombre
                 </label>
                 <input
                   type="text"
-                  placeholder="Default Input"
+                  placeholder="Ingrese el nombre de su Ingreso/Egreso/Deuda" 
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Select Country
+                    Seleccione una Opción
                 </label>
                 <div className="relative z-20 bg-white dark:bg-form-input">
 
@@ -57,7 +57,7 @@ const FormFilter = () => {
                     }`}
                     >
                     <option value="" disabled className="text-body dark:text-bodydark">
-                        Select Type
+                        Seleccione
                     </option>
                     <option value="forReceive" className="text-body dark:text-bodydark">
                         Pendiente
@@ -89,7 +89,7 @@ const FormFilter = () => {
               </div>
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Is completed?
+                    Está Completado?
                 </label>
                 <label
                     htmlFor="checkboxLabelFour"
@@ -127,7 +127,7 @@ const FormFilter = () => {
                             href="#"
                             className="inline-flex items-center justify-center rounded-md bg-meta-3 px-9 py-3 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                             >
-                            Search
+                            Buscar
                         </Link>
                     </div>
                 </div>

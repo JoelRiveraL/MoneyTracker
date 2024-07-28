@@ -15,7 +15,7 @@ interface SidebarProps {
 
 const menuGroups = [
   {
-    name: "MENU",
+    name: "MENÚ",
     menuItems: [
       {
         icon: (
@@ -45,7 +45,7 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Create Payment",
+        label: "Página Principal",
         route: "/home",
       },
       {
@@ -64,7 +64,7 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Calendar",
+        label: "Calendario",
         route: "#",
       },
       {
@@ -99,7 +99,7 @@ const menuGroups = [
             />
             </svg>
         ),
-        label: "Debts",
+        label: "Deudas",
         route: "/debts",
       },
       {
@@ -130,7 +130,7 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Notes",
+        label: "Notas",
         route: "/notes",
       },
       {
@@ -153,7 +153,7 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Profile",
+        label: "Perfil",
         route: "/usersettings",
       },
       {
@@ -188,13 +188,13 @@ const menuGroups = [
           />
           </svg>
         ),
-        label: "General Summary",
+        label: "Resumen General",
         route: "/generalsummary",
       },
     ],
   },
   {
-    name: "OTHERS",
+    name: "OTROS",
     menuItems: [
       {
         icon: (
@@ -228,7 +228,7 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Log Out",
+        label: "Cerrar Sesión",
         route: "/",
       },
     ],

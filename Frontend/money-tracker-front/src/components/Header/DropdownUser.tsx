@@ -15,9 +15,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            Joel Rivera
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">Ing. Software</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
@@ -78,7 +78,7 @@ const DropdownUser = () => {
                     fill=""
                   />
                 </svg>
-                My Profile
+                Mi Perfil
               </Link>
             </li>
           </ul>
@@ -101,7 +101,7 @@ const DropdownUser = () => {
                     fill=""
                 />
                 </svg>
-                Log Out
+                Cerrar Sesión
             </button>
           </Link>
         </div>

@@ -8,11 +8,11 @@ const generalsummary = () => {
     <DefaultLayout>
       <div className="mx-auto max-w-270">
         <br/>
-        <h1>Inputs</h1>
+        <h1>Ingresar Campos</h1>
         <br/>
         <FormFilter />
         <br/>
-        <h1>General Summary</h1>
+        <h1>Resumen General</h1>
         <br/>
         <TableThree />
       </div>

@@ -13,14 +13,14 @@ const usersettings = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
-        <Breadcrumb pageName="Settings" />
+        <Breadcrumb pageName="Mi Perfil" />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Personal Information
+                  Información Personal
                 </h3>
               </div>
               <div className="p-7">
@@ -31,7 +31,7 @@ const usersettings = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="fullName"
                       >
-                        Full Name
+                        Nombre Completo
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
@@ -64,8 +64,8 @@ const usersettings = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          placeholder="Joel Rivera"
+                          defaultValue="Joel Rivera"
                         />
                       </div>
                     </div>
@@ -75,15 +75,15 @@ const usersettings = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="phoneNumber"
                       >
-                        Phone Number
+                        Número de Teléfono
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        placeholder="+593 98457 5701"
+                        defaultValue="+593 98457 5701"
                       />
                     </div>
                   </div>
@@ -93,7 +93,7 @@ const usersettings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="emailAddress"
                     >
-                      Email Address
+                      Correo Electrónico
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -126,8 +126,8 @@ const usersettings = () => {
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        placeholder="usuario@example.com"
+                        defaultValue="joelal3033@gmail.com"
                       />
                     </div>
                   </div>
@@ -137,15 +137,15 @@ const usersettings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
                     >
-                      Username
+                      Usuario
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
                       name="Username"
                       id="Username"
-                      placeholder="devidjhon24"
-                      defaultValue="devidjhon24"
+                      placeholder="Tu usuario"
+                      defaultValue="TheA1esso"
                     />
                   </div>
 
@@ -154,7 +154,7 @@ const usersettings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
                     >
-                      BIO
+                      Biografía
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -193,8 +193,8 @@ const usersettings = () => {
                         name="bio"
                         id="bio"
                         rows={6}
-                        placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
+                        placeholder="Escribe algo sobre ti aquí"
+                        defaultValue=""
                       ></textarea>
                     </div>
                   </div>
@@ -204,13 +204,13 @@ const usersettings = () => {
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="submit"
                     >
-                      Cancel
+                      Cancelar
                     </button>
                     <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
                     >
-                      Save
+                      Guardar
                     </button>
                   </div>
                 </form>
@@ -221,7 +221,7 @@ const usersettings = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Your Photo
+                  Tu Foto
                 </h3>
               </div>
               <div className="p-7">
@@ -232,19 +232,19 @@ const usersettings = () => {
                         src={"/images/user/user-03.png"}
                         width={55}
                         height={55}
-                        alt="User"
+                        alt="Usuario"
                       />
                     </div>
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
-                        Edit your photo
+                        Edita tu foto
                       </span>
                       <span className="flex gap-2.5">
                         <button className="text-sm hover:text-primary">
-                          Delete
+                          Borrar
                         </button>
                         <button className="text-sm hover:text-primary">
-                          Update
+                          Actualizar
                         </button>
                       </span>
                     </div>
@@ -289,8 +289,8 @@ const usersettings = () => {
                         </svg>
                       </span>
                       <p>
-                        <span className="text-primary">Click to upload</span> or
-                        drag and drop
+                        <span className="text-primary">Haga Clic para Cargar</span> o
+                        Arrastrar y Soltar
                       </p>
                       <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
                       <p>(max, 800 X 800px)</p>
@@ -302,13 +302,13 @@ const usersettings = () => {
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="submit"
                     >
-                      Cancel
+                      Cancelar
                     </button>
                     <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
                     >
-                      Save
+                      Guardar
                     </button>
                   </div>
                 </form>
