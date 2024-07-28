@@ -7,13 +7,13 @@ export class UsersController {
 
   @Post('createUser')
   async createUser(@Body() userData: any): Promise<{ message: string }> {
-    await this.usersService.createPayment(userData);
+    await this.usersService.createUser(userData);
     return { message: 'Usuario creado exitosamente' };
   }
 
   @Get('getUsers')
   async getUsers(): Promise<any> {
-    return this.usersService.getPayments();
+    return this.usersService.getUsers();
   }
 
   //Validar Login

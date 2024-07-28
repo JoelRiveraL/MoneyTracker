@@ -5,13 +5,13 @@ import { firebaseDataBase } from 'src/firebaseConfig';
 
 @Injectable()
 export class UsersService {
-    async createPayment(data: any): Promise<void> {
+    async createUser(data: any): Promise<void> {
         const dataRef = ref(firebaseDataBase, 'Users');
         const newElementRef = push(dataRef, {dataRef: data});
         await set(newElementRef, data);
     }
 
-    async getPayments(): Promise<any> {
+    async getUsers(): Promise<any> {
         const dataRef = ref(firebaseDataBase, 'Users');
         const snapshot: DataSnapshot = await get(dataRef);
         if (snapshot.exists()) {
