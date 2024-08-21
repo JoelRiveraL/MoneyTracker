@@ -6,6 +6,7 @@ import DefaultLayout from "../components/Layouts/DefaultLayout";
 
 const usersettings = () => {
     const [user, setUser] = useState<any>(null);
+    var fullName = "";
 
     useEffect(() => {
       const userData = localStorage.getItem('user');
@@ -15,6 +16,8 @@ const usersettings = () => {
         window.location.href = '/login';
       }
     }, []);
+    fullName = user?.name + " " + user?.lastname;
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
@@ -69,7 +72,7 @@ const usersettings = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          defaultValue={user?.name + " " + user?.lastname}
+                          defaultValue={fullName}
                         />
                       </div>
                     </div>
