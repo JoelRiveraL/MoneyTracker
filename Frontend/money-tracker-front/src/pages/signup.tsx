@@ -15,48 +15,46 @@ const Signup = () => {
     event.preventDefault();
 
     if (password !== passwordConfirm) {
-      setErrorMessage('Las contraseñas no coinciden.');
-      return;
+        setErrorMessage('Las contraseñas no coinciden.');
+        return;
     }
 
     setErrorMessage('');
 
     const userData = {
-      name,
-      lastname,
-      email,
-      password,
+        name,
+        lastname,
+        email,
+        password,
     };
 
     try {
-      // Enviar la solicitud POST
-      const response = await fetch('http://localhost:3000/users/createUser', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
+        const response = await fetch('http://localhost:3003/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
 
-      // Verificar la respuesta
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setSuccessMessage('Cuenta creada exitosamente.');
-        setName('');
-        setLastname('');
-        setEmail('');
-        setPassword('');
-        setPasswordConfirm('');
-      } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData.message || 'Error al crear la cuenta.');
-      }
+        if (response.ok) {
+            const data = await response.json();
+            setSuccessMessage(data.message || 'Cuenta creada exitosamente.');
+            setName('');
+            setLastname('');
+            setEmail('');
+            setPassword('');
+            setPasswordConfirm('');
+        } else {
+            const errorData = await response.json();
+            setErrorMessage(errorData.message || 'Error al crear la cuenta.');
+        }
     } catch (error) {
-      console.error('Error:', error);
-      setErrorMessage('Error al conectarse con el servidor.');
+        console.error('Error:', error);
+        setErrorMessage('Error al conectarse con el servidor.');
     }
-  };
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">

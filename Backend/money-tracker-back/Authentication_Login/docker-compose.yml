@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  autenticacionlogin:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: autenticacionlogin
+    ports:
+      - "3003:3000" # Mapea el puerto 3000 del contenedor al 3003 en la máquina anfitriona
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET} # Usa la variable de entorno definida en .env
+    env_file: 
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped

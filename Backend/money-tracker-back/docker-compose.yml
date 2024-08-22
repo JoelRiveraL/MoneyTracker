@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  autenticacionlogin:
+    build:
+      context: ./Authentication_Login
+      dockerfile: Dockerfile
+    container_name: autenticacionlogin
+    ports:
+      - "3003:3000"
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET}
+    env_file:
+      - ./Authentication_Login/.env
+    volumes:
+      - ./Authentication_Login:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
+  apipagos:
+    build:
+      context: ./apipagos
+      dockerfile: Dockerfile
+    container_name: apipagos
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET}
+    env_file:
+      - ./apipagos/.env
+    volumes:
+      - ./apipagos:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+

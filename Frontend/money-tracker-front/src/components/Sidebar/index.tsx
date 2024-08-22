@@ -46,7 +46,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Página Principal",
-        route: "/home",
+        route: "/main/home",
       },
       {
         icon: (
@@ -65,7 +65,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Calendario",
-        route: "#",
+        route: "/main/home", //cambiar a /calendar
       },
       {
         icon: (
@@ -100,7 +100,7 @@ const menuGroups = [
             </svg>
         ),
         label: "Deudas",
-        route: "/debts",
+        route: "/main/debts",
       },
       {
         icon: (
@@ -131,7 +131,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Notas",
-        route: "/notes",
+        route: "/main/notes",
       },
       {
         icon: (
@@ -154,7 +154,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Perfil",
-        route: "/usersettings",
+        route: "/main/usersettings",
       },
       {
         icon: (
@@ -189,7 +189,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Resumen General",
-        route: "/generalsummary",
+        route: "/main/generalsummary",
       },
     ],
   },

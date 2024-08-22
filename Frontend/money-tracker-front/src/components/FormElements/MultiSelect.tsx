@@ -9,11 +9,12 @@ interface Option {
 
 interface DropdownProps {
   id: string;
+  onChange: (selectedValue: string) => void;
 }
 
-const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
+const SingleSelect: React.FC<DropdownProps> = ({ id, onChange }) => {
   const [options, setOptions] = useState<Option[]>([]);
-  const [selected, setSelected] = useState<number[]>([]);
+  const [selected, setSelected] = useState<number | null>(null);
   const [show, setShow] = useState(false);
   const dropdownRef = useRef<any>(null);
   const trigger = useRef<any>(null);
@@ -37,6 +38,12 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
     loadOptions();
   }, [id]);
 
+  useEffect(() => {
+    if (selected !== null) {
+      onChange(options[selected].value); // Call onChange with the selected value
+    }
+  }, [selected]); // Call onChange whenever selected changes
+
   const open = () => {
     setShow(true);
   };
@@ -47,35 +54,10 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
 
   const select = (index: number, event: React.MouseEvent) => {
     const newOptions = [...options];
-
-    if (!newOptions[index].selected) {
-      newOptions[index].selected = true;
-      newOptions[index].element = event.currentTarget as HTMLElement;
-      setSelected([...selected, index]);
-    } else {
-      const selectedIndex = selected.indexOf(index);
-      if (selectedIndex !== -1) {
-        newOptions[index].selected = false;
-        setSelected(selected.filter((i) => i !== index));
-      }
-    }
+    newOptions.forEach((option, i) => (option.selected = i === index));
 
     setOptions(newOptions);
-  };
-
-  const remove = (index: number) => {
-    const newOptions = [...options];
-    const selectedIndex = selected.indexOf(index);
-
-    if (selectedIndex !== -1) {
-      newOptions[index].selected = false;
-      setSelected(selected.filter((i) => i !== index));
-      setOptions(newOptions);
-    }
-  };
-
-  const selectedValues = () => {
-    return selected.map((option) => options[option].value);
+    setSelected(index);
   };
 
   useEffect(() => {
@@ -91,39 +73,38 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
     };
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  });
+  }, [show]);
 
   return (
     <div className="relative z-50">
       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Seleccione su Tipo de Actividad Financiera
+        Seleccione su tipo de actividad financiera
       </label>
       <div>
         <select className="hidden" id={id}>
-          <option value="1">Ingreso</option>
-          <option value="2">Egreso</option>
-          <option value="3">Deuda a Pagar</option>
-          <option value="4">Deuda a Cobrar</option>
+          <option value="Ingreso">Ingreso</option>
+          <option value="Egreso">Egreso</option>
+          <option value="Deuda a Pagar">Deuda a Pagar</option>
+          <option value="Deuda a Cobrar">Deuda a Cobrar</option>
         </select>
 
         <div className="flex flex-col items-center">
-          <input name="values" type="hidden" defaultValue={selectedValues()} />
+          <input name="values" type="hidden" defaultValue={selected !== null ? options[selected].value : ''} />
           <div className="relative z-20 inline-block w-full">
             <div className="relative flex flex-col items-center">
               <div ref={trigger} onClick={open} className="w-full">
                 <div className="mb-2 flex rounded border border-stroke py-2 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
                   <div className="flex flex-auto flex-wrap gap-3">
-                    {selected.map((index) => (
+                    {selected !== null ? (
                       <div
-                        key={index}
                         className="my-1.5 flex items-center justify-center rounded border-[.5px] border-stroke bg-gray px-2.5 py-1.5 text-sm font-medium dark:border-strokedark dark:bg-white/30"
                       >
                         <div className="max-w-full flex-initial">
-                          {options[index].text}
+                          {options[selected].text}
                         </div>
                         <div className="flex flex-auto flex-row-reverse">
                           <div
-                            onClick={() => remove(index)}
+                            onClick={() => setSelected(null)}
                             className="cursor-pointer pl-2 hover:text-danger"
                           >
                             <svg
@@ -145,13 +126,13 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
                           </div>
                         </div>
                       </div>
-                    ))}
-                    {selected.length === 0 && (
+                    ) : (
                       <div className="flex-1">
                         <input
                           placeholder="Seleccione una opción"
                           className="h-full w-full appearance-none bg-transparent p-1 px-2 outline-none"
-                          defaultValue={selectedValues()}
+                          value=""
+                          readOnly
                         />
                       </div>
                     )}
@@ -223,4 +204,4 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
   );
 };
 
-export default MultiSelect;
+export default SingleSelect;

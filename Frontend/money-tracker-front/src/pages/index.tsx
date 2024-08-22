@@ -1,38 +1,49 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Index: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+  
+    const router = useRouter();
+  
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+    
+      try {
+        const response = await fetch('http://localhost:3003/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+    
+        const data = await response.json();
+    
+        if (response.ok) {
+          setSuccess('Autenticación exitosa');
+          
+          // Establecer la cookie con el token
+          document.cookie = `token=${data.access_token}; path=/; max-age=3600; SameSite=Lax`;
+          
+          console.log('Autenticación exitosa:', data.access_token);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  
-    try {
-      const response = await fetch('http://localhost:3000/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        setSuccess('Autenticación exitosa');
-        localStorage.setItem('user', JSON.stringify(data));
-        window.location.href = '/home';
-      } else {
-        setError(data.message || 'Error en la autenticación');
+          localStorage.setItem('user', JSON.stringify(data.user));
+
+          //user
+          router.push('/main/home');
+        } else {
+          setError(data.message || 'Error en la autenticación');
+        }
+      } catch (error) {
+        console.error('Error en la autenticación:', error);
+        setError('Error datos incorrectos.');
       }
-    } catch (error) {
-      console.error('Error en la autenticación:', error);
-      setError('Error datos incorrectos.');
-    }
-  };
+    };
   
 
   return (

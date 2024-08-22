@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  apipagos:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: apipagos
+    ports:
+      - "3002:3000" 
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET} # Usa la variable de entorno definida en .env
+    env_file: 
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
