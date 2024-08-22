@@ -11,7 +11,7 @@ const Index: React.FC = () => {
     event.preventDefault();
   
     try {
-      const response = await fetch('http://localhost:3000/users/login', {
+      const response = await fetch('http://localhost:3003/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -23,7 +23,11 @@ const Index: React.FC = () => {
   
       if (response.ok) {
         setSuccess('Autenticación exitosa');
-        localStorage.setItem('user', JSON.stringify(data));
+
+    //localStorage.setItem('user', JSON.stringify(data));
+        // Guardar el token en una cookie
+        document.cookie = `access_token=${data.access_token}; path=/;`;
+        
         window.location.href = '/home';
       } else {
         setError(data.message || 'Error en la autenticación');

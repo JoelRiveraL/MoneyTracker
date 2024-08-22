@@ -13,7 +13,6 @@ const Debts = () => {
         <br></br>
         <TableThree />
 
-
       </div>
     </DefaultLayout>
   );

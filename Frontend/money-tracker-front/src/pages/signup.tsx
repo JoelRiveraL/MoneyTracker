@@ -30,7 +30,7 @@ const Signup = () => {
 
     try {
       // Enviar la solicitud POST
-      const response = await fetch('http://localhost:3000/users/createUser', {
+      const response = await fetch('http://localhost:3003/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
