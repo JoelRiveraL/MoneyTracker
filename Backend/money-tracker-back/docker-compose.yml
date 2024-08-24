@@ -35,3 +35,20 @@ services:
       - /usr/src/app/node_modules
     restart: unless-stopped
 
+  apinotas:
+    build: 
+      context: ./apinotas
+      dockerfile: Dockerfile
+    container_name: apinotas
+    ports:
+      - "3004:3000" 
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET} 
+    env_file: 
+      - .env
+    volumes:
+      - ./apinotas:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
