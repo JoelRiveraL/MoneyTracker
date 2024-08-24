@@ -12,6 +12,7 @@
     "flatpickr": "^4.6.13",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
+    "money-tracker-front": "file:",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"
