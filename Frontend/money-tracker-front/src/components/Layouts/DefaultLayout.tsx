@@ -7,7 +7,7 @@ export default function DefaultLayout({ children,}: {
   children: React.ReactNode;
 }) {
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <>
       <div className="flex">
