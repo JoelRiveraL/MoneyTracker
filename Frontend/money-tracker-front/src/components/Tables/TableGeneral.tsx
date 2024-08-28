@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { Payment as Payment } from "../../models/payment";
 import ButtonsTable from "./ButtonsTable";
-import ModalFormEditPayment from '../Forms/ModalFormEditPayment';
+import ModalFormEditPayment from "../Forms/ModalFormEditPayment";
+
+
+import dynamic from 'next/dynamic';
+
+const PDFLinkComponent = dynamic(() => import('../utils/PDFLinkComponent'), {
+  ssr: false, // Esto deshabilita la SSR para este componente
+});
 
 interface TableGeneralProps {
   limit?: number; // Optional limit parameter
@@ -182,6 +189,8 @@ const TableGeneral: React.FC<TableGeneralProps> = ({ limit = 5 }) => {
               )}
             </tbody>
           </table>
+          {/* Botón para exportar en PDF */}
+          <PDFLinkComponent data={payments} />
         </div>
       </div>
     </div>
