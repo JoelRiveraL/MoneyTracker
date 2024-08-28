@@ -8,14 +8,16 @@ import ModalFormEditPayment from "../Forms/ModalFormEditPayment";
 import dynamic from 'next/dynamic';
 
 const PDFLinkComponent = dynamic(() => import('../utils/PDFLinkComponent'), {
-  ssr: false, // Esto deshabilita la SSR para este componente
+  ssr: false,
 });
 
 interface TableGeneralProps {
-  limit?: number; // Optional limit parameter
+  limit?: number;
+  filter: { name: string };
 }
 
-const TableGeneral: React.FC<TableGeneralProps> = ({ limit = 5 }) => {
+
+const TableGeneral: React.FC<TableGeneralProps> = ({ limit = 5, filter  }) => {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
 
@@ -38,12 +40,12 @@ const TableGeneral: React.FC<TableGeneralProps> = ({ limit = 5 }) => {
 
       if (response.ok) {
         const data = await response.json();
-        data.sort(
-          (a: Payment, b: Payment) =>
-            new Date(b.date).getTime() - new Date(a.date).getTime()
+        data.sort((a: Payment, b: Payment) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        
+        const filteredData = data.filter((item: Payment) =>
+          item.name.toLowerCase().includes(filter.name.toLowerCase())
         );
-        setPayments(limit > 0 ? data.slice(0, limit) : data);
-        console.log("Payments fetched:", data);
+        setPayments(limit > 0 ? filteredData.slice(0, limit) : filteredData);
       } else {
         console.error("Error fetching payments:", response.statusText);
       }
@@ -84,7 +86,7 @@ const TableGeneral: React.FC<TableGeneralProps> = ({ limit = 5 }) => {
 
   useEffect(() => {
     fetchPayments();
-  }, [limit]);
+  }, [limit, filter]);
 
   const handleClose = () => {
     setSelectedPayment(null); // Cierra el modal

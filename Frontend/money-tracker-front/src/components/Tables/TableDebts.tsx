@@ -2,9 +2,16 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { PaymentDebt } from "../../models/paymentDebt";
 import ButtonsTable from "./ButtonsTable";
+import ModalFormEditPayment from "../Forms/ModalFormEditPayment";
 
-const TableDebts = () => {
+interface TableDebtsProps {
+    filter: { name: string};
+  }
+  
+
+const TableDebts = ({ filter }: TableDebtsProps) => {
   const [payments, setPayments] = useState<PaymentDebt[]>([]);
+  const [selectedPayment, setSelectedPayment] = useState<PaymentDebt | null>(null);
 
   const fetchPayments = async () => {
     const token = Cookies.get('token');
@@ -27,8 +34,12 @@ const TableDebts = () => {
         const data = await response.json();
         console.log('Payments data:', data);
 
-        // Filtrar solo pagos que sean de tipo deuda
-        const debts = data.filter((item: PaymentDebt) => item.type.toLowerCase().includes("deuda"));
+        let debts = data.filter((item: PaymentDebt) => item.type.toLowerCase().includes("deuda"));
+
+        if (filter.name) {
+          debts = debts.filter((item: { name: string; }) => item.name.toLowerCase().includes(filter.name.toLowerCase()));
+        }
+
         setPayments(debts);
       } else {
         console.error('Error fetching payments:', response.statusText);
@@ -38,10 +49,50 @@ const TableDebts = () => {
     }
   };
 
+  async function deletePayment(paymentId: string) {
+    const token = Cookies.get("token");
+
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3002/payment/deleteData/${paymentId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        console.log("Pago eliminada exitosamente");
+      } else {
+        console.error("Error al eliminar la nota");
+      }
+    } catch (error) {
+      console.error("Error al conectar con el servidor:", error);
+    }
+  }
+
   useEffect(() => {
     fetchPayments();
-  }, []);
+  }, [filter]);
 
+  
+  const handleClose = () => {
+    setSelectedPayment(null); // Cierra el modal
+  };
+  const editPayment = (paymentId: string) => {
+    const paymentToEdit = payments.find((payment) => payment.id === paymentId);
+    if (paymentToEdit) {
+      setSelectedPayment(paymentToEdit);
+    }
+  };
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
@@ -99,10 +150,20 @@ const TableDebts = () => {
                     </p>
                   </td>
                   <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                    <ButtonsTable />
+                    <ButtonsTable
+                      onClickDelete={() => deletePayment(packageItem.id)}
+                      onClickEdit={() => editPayment(packageItem.id)}
+                    />
                   </td>
                 </tr>
               ))}
+              {selectedPayment && (
+                <ModalFormEditPayment
+                  payment={selectedPayment}
+                  formType={"edit"}
+                  onClose={handleClose}
+                />
+              )}
             </tbody>
           </table>
         </div>

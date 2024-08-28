@@ -37,7 +37,6 @@ const DropdownNotification = () => {
             const saldado = payment.status;
             const diffTime = dateLimit.getTime() - today.getTime();
             var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            diffDays += 1;
             if (diffDays <= 3 && diffDays > 0 && saldado != "Pagado") {
               newNotifications.push(`Te quedan ${diffDays} día(s) para saldar el pago ${payment.name}.`);
             }

@@ -1,21 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DefaultLayout from '../../components/Layouts/DefaultLayout';
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import TableThree from '../../components/Tables/TableDebts';
-import FormFilterDebt from '../../components/Forms/FormFilterDebt'
+import TableDebts from '../../components/Tables/TableDebts';
+import FormFilter from '../../components/Forms/FormFilterDebt';
 
 const Debts = () => {
+  const [filter, setFilter] = useState({ name: ''});
+
+  const handleFilterChange = (newFilter: { name: string}) => {
+    setFilter(newFilter);
+  };
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
-      <Breadcrumb pageName="Deudas" />
-        <FormFilterDebt />
-        <br></br>
-        <TableThree />
-
-
+        <Breadcrumb pageName="Deudas" />
+        <FormFilter onFilterChange={handleFilterChange} />
+        <br />
+        <TableDebts filter={filter} />
       </div>
     </DefaultLayout>
   );
-}
+};
+
 export default Debts;
