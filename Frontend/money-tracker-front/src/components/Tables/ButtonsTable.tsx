@@ -1,10 +1,10 @@
 import React from 'react'
 
-const ButtonsTable = () => {
+const ButtonsTable = ({ onClickDelete, onClickEdit}: {onClickDelete: () => void,onClickEdit: () => void }) => {
   return (
     <div>
         <div className="flex items-center space-x-3.5">
-                <button className="hover:text-primary">
+                <button onClick={onClickDelete}  className="hover:text-primary">
                     <svg
                         className="fill-current"
                         width="18"
@@ -30,7 +30,7 @@ const ButtonsTable = () => {
                         />
                       </svg>
                     </button>
-                    <button className="hover:text-primary">
+                    <button onClick={onClickEdit} className="hover:text-primary">
                     <svg
                         className="fill-current"
                         width="18"

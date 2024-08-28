@@ -14,10 +14,19 @@ export class PaymentService {
     const dataRef = ref(firebaseDataBase, 'Payment');
     const snapshot: DataSnapshot = await get(dataRef);
     const payments = snapshot.val();
-    const userPayments = Object.values(payments).filter(
-      (payment: any) => payment.userId === userId,
-    );
-    return userPayments;
+    console.log(payments); // Muestra el objeto completo de notas
+
+    // Filtrar notas por userId y mantener el ID de Firebase
+    const paymentsArray = Object.keys(payments).reduce((acc: any[], id) => {
+      const payment = payments[id];
+      if (payment.userId === userId) {
+        acc.push({ id, ...payment }); // Agregar el ID junto con los datos de la nota
+      }
+      return acc;
+    }, []);
+
+    console.log(paymentsArray); // Muestra el array con los IDs y las notas
+    return paymentsArray;
   }
 
   //Aqui se debe hacer un get de un solo pago por el id del pago y el userId
