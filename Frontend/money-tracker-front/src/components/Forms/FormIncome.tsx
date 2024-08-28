@@ -9,54 +9,79 @@ const FormIncome = () => {
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
   const [type, setTypes] = useState('');
+  const [dateLimit, setDateLimit] = useState('');
   const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState<'success' | 'error'>('success'); // Estado para el tipo de mensaje
+  const [messageType, setMessageType] = useState<'success' | 'error'>('success');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
+  
     const token = Cookies.get('token');
     const date = new Date().toISOString();
-
+  
     if (!token) {
       console.error('No token found');
       return;
     }
-
+  
+    let formattedDateLimit: string | null = null;
+    if (dateLimit) {
+      const dateObj = new Date(dateLimit);
+      dateObj.setDate(dateObj.getDate() + 1); // Sumar un día
+      formattedDateLimit = dateObj.toISOString();
+    }
+  
+    const body: {
+      name: string;
+      price: string;
+      description: string;
+      status: string;
+      type: string;
+      date: string;
+      dateLimit?: string;
+    } = {
+      name,
+      price,
+      description,
+      status,
+      type,
+      date,
+    };
+  
+    if (type === 'Deuda a Pagar' || type === 'Deuda a Cobrar') {
+      if (formattedDateLimit) {
+        body.dateLimit = formattedDateLimit;
+      }
+    }
+  
     try {
       const response = await fetch('http://localhost:3002/payment/createData', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name,
-          price,
-          description,
-          status,
-          type,
-          date
-        }),
+        body: JSON.stringify(body),
       });
-
+  
       if (response.ok) {
         setMessage('Datos enviados con éxito');
-        setMessageType('success'); // Establecer tipo de mensaje a éxito
+        setMessageType('success');
         setTimeout(() => {
           window.location.reload();
         }, 2000);
       } else {
         console.error('Error sending data:', response.statusText);
         setMessage('Error al enviar los datos');
-        setMessageType('error'); // Establecer tipo de mensaje a error
+        setMessageType('error');
       }
     } catch (error) {
       console.error('Error sending data:', error);
       setMessage('Error al enviar los datos');
-      setMessageType('error'); // Establecer tipo de mensaje a error
+      setMessageType('error');
     }
   };
+  
 
   return (
     <div>
@@ -105,6 +130,21 @@ const FormIncome = () => {
                   onChange={(selectedValues) => setTypes(selectedValues)}
                 />
               </div>
+              
+              {/* Campo de Fecha Límite */}
+              {(type === 'Deuda a Pagar' || type === 'Deuda a Cobrar') && (
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Fecha Límite de la Deuda
+                  </label>
+                  <input
+                    type="date"
+                    value={dateLimit}
+                    onChange={(e) => setDateLimit(e.target.value)}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+              )}
             </div>
           </div>
 
@@ -128,6 +168,7 @@ const FormIncome = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 ></textarea>
               </div>
+
               <div>
                 <SelectStatus
                   id="selectStatus"

@@ -1,17 +1,70 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import Cookies from "js-cookie";
 import ClickOutside from "../ClickOutside";
+import { PaymentDebt } from "../../models/paymentDebt";
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
+  const [notifications, setNotifications] = useState<string[]>([]);
+
+  const fetchDebtNotifications = async () => {
+    const token = Cookies.get('token');
+
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3002/payment/getData', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data: PaymentDebt[] = await response.json();
+        const today = new Date();
+        const newNotifications: string[] = [];
+
+        data.forEach((payment) => {
+          if (payment.type.toLowerCase().includes("deuda") && payment.dateLimit) {
+            const dateLimit = new Date(payment.dateLimit);
+            const saldado = payment.status;
+            const diffTime = dateLimit.getTime() - today.getTime();
+            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            diffDays += 1;
+            if (diffDays <= 3 && diffDays > 0 && saldado != "Pagado") {
+              newNotifications.push(`Te quedan ${diffDays} día(s) para saldar el pago ${payment.name}.`);
+            }
+          }
+        });
+
+        setNotifications(newNotifications);
+        setNotifying(newNotifications.length > 0);
+      } else {
+        console.error('Error fetching payments:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching payments:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (dropdownOpen) {
+      fetchDebtNotifications();
+    }
+  }, [dropdownOpen]);
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <li>
         <Link
           onClick={() => {
-            setNotifying(false);
             setDropdownOpen(!dropdownOpen);
           }}
           href="#"
@@ -19,7 +72,7 @@ const DropdownNotification = () => {
         >
           <span
             className={`absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1 ${
-              notifying === false ? "hidden" : "inline"
+              notifying ? "inline" : "hidden"
             }`}
           >
             <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
@@ -46,26 +99,30 @@ const DropdownNotification = () => {
           >
             <div className="px-4.5 py-3">
               <h5 className="text-sm font-medium text-bodydark2">
-                Notification
+                Notifications
               </h5>
             </div>
 
             <ul className="flex h-auto flex-col overflow-y-auto">
-              <li>
-                <Link
-                  className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                  href="#"
-                >
-                  <p className="text-sm">
-                    <span className="text-black dark:text-white">
-                      Presentar el proyecto de web
-                    </span>{" "}
-                    Tienes pendiente un 20 en web avanzada no lo olvides.
-                  </p>
-
-                  <p className="text-xs">29 June, 2024</p>
-                </Link>
-              </li>
+              {notifications.length > 0 ? (
+                notifications.map((notification, index) => (
+                  <li key={index}>
+                    <div className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4">
+                      <p className="text-sm text-black dark:text-white">
+                        {notification}
+                      </p>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <li>
+                  <div className="flex flex-col gap-2.5 px-4.5 py-3">
+                    <p className="text-sm text-black dark:text-white">
+                      No hay notificaciones pendientes.
+                    </p>
+                  </div>
+                </li>
+              )}
             </ul>
           </div>
         )}
