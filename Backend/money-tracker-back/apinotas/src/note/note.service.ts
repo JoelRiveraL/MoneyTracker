@@ -4,22 +4,30 @@ import { firebaseDataBase } from 'src/firebaseConfig';
 
 @Injectable()
 export class NoteService {
-    async createNote(data: any): Promise<void> {
-        const dataRef = ref(firebaseDataBase, 'Note');
-        const newElementRef = push(dataRef, { dataRef: data });
-        await set(newElementRef, { ...data, userId: data.userId }); 
-      }
-  
+  async createNote(data: any): Promise<void> {
+    const dataRef = ref(firebaseDataBase, 'Note');
+    const newElementRef = push(dataRef, { dataRef: data });
+    await set(newElementRef, { ...data, userId: data.userId });
+  }
+
   async getNotes(userId: string): Promise<any> {
     const dataRef = ref(firebaseDataBase, 'Note');
     const snapshot: DataSnapshot = await get(dataRef);
     const notes = snapshot.val();
-    const userNotes = Object.values(notes).filter(
-      (note: any) => note.userId === userId,
-    );
-    return userNotes;
-  }
+    console.log(notes); // Muestra el objeto completo de notas
 
+    // Filtrar notas por userId y mantener el ID de Firebase
+    const notesArray = Object.keys(notes).reduce((acc: any[], id) => {
+      const note = notes[id];
+      if (note.userId === userId) {
+        acc.push({ id, ...note }); // Agregar el ID junto con los datos de la nota
+      }
+      return acc;
+    }, []);
+
+    console.log(notesArray); // Muestra el array con los IDs y las notas
+    return notesArray;
+  }
 
   async getNoteById(userId: string, noteId: string): Promise<any> {
     const dataRef = ref(firebaseDataBase, `Note/${noteId}`);
@@ -33,8 +41,7 @@ export class NoteService {
     }
   }
 
-
-  async updateNote(data: any,noteId: string): Promise<void> {
+  async updateNote(data: any, noteId: string): Promise<void> {
     const noteRef = ref(firebaseDataBase, `Note/${noteId}`);
     const snapshot: DataSnapshot = await get(noteRef);
     const note = snapshot.val();
@@ -46,16 +53,15 @@ export class NoteService {
     }
   }
 
-    async deleteNote(data: any,noteId): Promise<void> {
-        const noteRef = ref(firebaseDataBase, `Note/${noteId}`);
-        const snapshot: DataSnapshot = await get(noteRef);
-        const note = snapshot.val();
-    
-        if (note && note.userId === data.userId) {
-        await set(noteRef, null);
-        } else {
-        throw new Error('Note not found.');
-        }
+  async deleteNote(data: any, noteId): Promise<void> {
+    const noteRef = ref(firebaseDataBase, `Note/${noteId}`);
+    const snapshot: DataSnapshot = await get(noteRef);
+    const note = snapshot.val();
+
+    if (note && note.userId === data.userId) {
+      await set(noteRef, null);
+    } else {
+      throw new Error('Note not found.');
     }
-    
+  }
 }
