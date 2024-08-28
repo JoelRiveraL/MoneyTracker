@@ -30,9 +30,8 @@ git clone https://github.com/JoelRiveraL/MoneyTracker.git
  
 ```bash
  npm i -g @nestjs/cli
-  ```
-
 ```
+
  ### Crear el archivo `.env`:
 En la `raíz` de los tres `microservicios` `y` en la `raiz` de este proyecto `general` crea un archivo `.env` con el siguiente contenido:
 
