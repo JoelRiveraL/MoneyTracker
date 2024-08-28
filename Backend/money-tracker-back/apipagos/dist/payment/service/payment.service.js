@@ -20,8 +20,16 @@ let PaymentService = class PaymentService {
         const dataRef = (0, database_1.ref)(firebaseConfig_1.firebaseDataBase, 'Payment');
         const snapshot = await (0, database_1.get)(dataRef);
         const payments = snapshot.val();
-        const userPayments = Object.values(payments).filter((payment) => payment.userId === userId);
-        return userPayments;
+        console.log(payments);
+        const paymentsArray = Object.keys(payments).reduce((acc, id) => {
+            const payment = payments[id];
+            if (payment.userId === userId) {
+                acc.push({ id, ...payment });
+            }
+            return acc;
+        }, []);
+        console.log(paymentsArray);
+        return paymentsArray;
     }
     async getPaymentById(userId, paymentId) {
         const dataRef = (0, database_1.ref)(firebaseConfig_1.firebaseDataBase, `Payment/${paymentId}`);
