@@ -11,47 +11,50 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const users_service_1 = require("../users/users.service");
-const bcryptjs = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const jwt_1 = require("@nestjs/jwt");
+const users_service_1 = require("../users/service/users.service");
 let AuthService = class AuthService {
     constructor(usersService, jwtService) {
         this.usersService = usersService;
         this.jwtService = jwtService;
     }
     async register({ name, lastname, email, password }) {
+        if (!name || !lastname || !email || !password) {
+            throw new common_1.BadRequestException('All fields are required');
+        }
         const user = await this.usersService.getUserValidation(email);
         if (user) {
             throw new common_1.BadRequestException('User already exists');
         }
+        const hashedPassword = bcrypt.hashSync(password, 10);
         const newUser = await this.usersService.createUser({
-            name,
-            lastname,
-            email,
-            password: bcryptjs.hashSync(password, 10)
+            nombreU: name,
+            apellidoU: lastname,
+            correoU: email,
+            passwordU: hashedPassword,
         });
         return { message: 'User created successfully', user: newUser };
     }
     async login({ email, password }) {
         const user = await this.usersService.getUserValidation(email);
-        console.log(user.id);
         if (!user) {
             throw new common_1.UnauthorizedException('Email is incorrect');
         }
-        const passwordValid = await bcryptjs.compare(password, user.password);
+        const passwordValid = await bcrypt.compare(password, user.passwordU);
         if (!passwordValid) {
             throw new common_1.UnauthorizedException('Password is incorrect');
         }
         const payload = {
-            email: user.email,
-            name: user.name,
-            lastname: user.lastname,
-            sub: user.id
+            email: user.correoU,
+            name: user.nombreU,
+            lastname: user.apellidoU,
+            sub: user.idUsuario,
         };
         const token = await this.jwtService.signAsync(payload);
         return {
             access_token: token,
-            user: user
+            user,
         };
     }
     async validateToken(token) {

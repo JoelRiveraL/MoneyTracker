@@ -8,7 +8,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Instala las dependencias
-RUN npm install --production
+RUN npm i
+RUN npm install bcrypt
 
 # Copia todo el resto del código fuente en el contenedor
 COPY . .

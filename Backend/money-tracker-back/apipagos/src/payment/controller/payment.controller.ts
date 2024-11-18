@@ -36,9 +36,9 @@ export class PaymentController {
 
     @Delete('deleteData/:id')
     @UseGuards(PaymentGuard)
-    async deleteData(@Body() data: any,@Request() request:any,@Param('id') id: string): Promise<void> {
-        const userId= request.user.sub;  
-        await this.paymentService.deletePayment({...data,userId},id);
+    async deleteData(@Request() request: any, @Param('id') id: string): Promise<void> {
+        const userId = request.user.sub;  
+        await this.paymentService.deletePayment(userId, id);
     }
 
 }

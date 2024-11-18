@@ -3,5 +3,5 @@ export declare class PaymentService {
     getPayments(userId: string): Promise<any>;
     getPaymentById(userId: string, paymentId: string): Promise<any>;
     updatePayment(data: any, paymentId: string): Promise<void>;
-    deletePayment(data: any, paymentId: any): Promise<void>;
+    deletePayment(userId: string, paymentId: string): Promise<void>;
 }

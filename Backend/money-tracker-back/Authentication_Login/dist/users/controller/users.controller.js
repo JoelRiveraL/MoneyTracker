@@ -17,13 +17,15 @@ const common_1 = require("@nestjs/common");
 const users_service_1 = require("../service/users.service");
 const auth_service_1 = require("../../auth/auth.service");
 const auth_guard_1 = require("../../auth/guard/auth.guard");
+const bcrypt = require("bcryptjs");
 let UsersController = class UsersController {
     constructor(usersService, authService) {
         this.usersService = usersService;
         this.authService = authService;
     }
     async createUser(userData) {
-        await this.usersService.createUser(userData);
+        const hashedPassword = await bcrypt.hash(userData.password, 10);
+        await this.usersService.createUser({ ...userData, password: hashedPassword });
         return { message: 'Usuario creado exitosamente' };
     }
     async getUsers() {
@@ -34,8 +36,7 @@ let UsersController = class UsersController {
         if (!user) {
             throw new common_1.UnauthorizedException('Credenciales inválidas');
         }
-        console.log('User:', this.authService.login(user));
-        return this.authService.login(user);
+        return user;
     }
 };
 exports.UsersController = UsersController;

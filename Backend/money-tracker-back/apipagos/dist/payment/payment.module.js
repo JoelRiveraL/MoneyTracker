@@ -12,6 +12,7 @@ const payment_service_1 = require("./service/payment.service");
 const payment_controller_1 = require("./controller/payment.controller");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
+const payment_guard_1 = require("./guard/payment.guard");
 let PaymentModule = class PaymentModule {
 };
 exports.PaymentModule = PaymentModule;
@@ -20,12 +21,11 @@ exports.PaymentModule = PaymentModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot(),
             jwt_1.JwtModule.register({
-                global: true,
                 secret: process.env.JWT_SECRET,
                 signOptions: { expiresIn: '5m' },
             }),
         ],
-        providers: [payment_service_1.PaymentService],
+        providers: [payment_service_1.PaymentService, payment_guard_1.PaymentGuard],
         controllers: [payment_controller_1.PaymentController],
     })
 ], PaymentModule);

@@ -1,6 +1,20 @@
 version: '3.8'
 
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: MoneyTracker
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - backend
+    restart: unless-stopped
+
   autenticacionlogin:
     build:
       context: ./Authentication_Login
@@ -11,12 +25,18 @@ services:
     environment:
       - NODE_ENV=production
       - JWT_SECRET=${JWT_SECRET}
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=1234
+      - DB_NAME=MoneyTracker
     env_file:
       - ./Authentication_Login/.env
     volumes:
       - ./Authentication_Login:/usr/src/app
-      - /usr/src/app/node_modules
     restart: unless-stopped
+    networks:
+      - backend
 
   apipagos:
     build:
@@ -28,12 +48,18 @@ services:
     environment:
       - NODE_ENV=production
       - JWT_SECRET=${JWT_SECRET}
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=1234
+      - DB_NAME=MoneyTracker
     env_file:
       - ./apipagos/.env
     volumes:
       - ./apipagos:/usr/src/app
-      - /usr/src/app/node_modules
     restart: unless-stopped
+    networks:
+      - backend
 
   apinotas:
     build: 
@@ -44,11 +70,24 @@ services:
       - "3004:3000" 
     environment:
       - NODE_ENV=production
-      - JWT_SECRET=${JWT_SECRET} 
+      - JWT_SECRET=${JWT_SECRET}
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=1234
+      - DB_NAME=MoneyTracker
     env_file: 
-      - .env
+      - ./apinotas/.env
     volumes:
       - ./apinotas:/usr/src/app
-      - /usr/src/app/node_modules
     restart: unless-stopped
+    networks:
+      - backend
 
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local

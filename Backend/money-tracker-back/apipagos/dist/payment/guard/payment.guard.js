@@ -36,8 +36,12 @@ let PaymentGuard = class PaymentGuard {
         return true;
     }
     extractTokenFromHeader(request) {
-        const [type, token] = request.headers.authorization?.split(" ") ?? [];
-        return type === "Bearer" ? token : undefined;
+        const authHeader = request.headers.authorization;
+        if (!authHeader) {
+            return undefined;
+        }
+        const [type, token] = authHeader.split(' ');
+        return type === 'Bearer' ? token : undefined;
     }
 };
 exports.PaymentGuard = PaymentGuard;

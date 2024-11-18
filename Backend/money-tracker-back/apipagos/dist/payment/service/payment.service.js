@@ -53,12 +53,12 @@ let PaymentService = class PaymentService {
             throw new Error('Payment not found.');
         }
     }
-    async deletePayment(data, paymentId) {
+    async deletePayment(userId, paymentId) {
         const paymentRef = (0, database_1.ref)(firebaseConfig_1.firebaseDataBase, `Payment/${paymentId}`);
         const snapshot = await (0, database_1.get)(paymentRef);
         const payment = snapshot.val();
-        if (payment && payment.userId === data.userId) {
-            await (0, database_1.set)(paymentRef, null);
+        if (payment && payment.userId === userId) {
+            await (0, database_1.remove)(paymentRef);
         }
         else {
             throw new Error('Payment not found.');

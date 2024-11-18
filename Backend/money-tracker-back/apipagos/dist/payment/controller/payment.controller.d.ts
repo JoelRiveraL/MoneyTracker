@@ -6,5 +6,5 @@ export declare class PaymentController {
     getData(request: any): Promise<any>;
     getDataById(id: string, request: any): Promise<any>;
     updateData(data: any, request: any, id: string): Promise<void>;
-    deleteData(data: any, request: any, id: string): Promise<void>;
+    deleteData(request: any, id: string): Promise<void>;
 }

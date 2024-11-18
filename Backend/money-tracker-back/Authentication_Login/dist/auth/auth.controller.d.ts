@@ -4,11 +4,11 @@ export declare class AuthController {
     constructor(authService: AuthService);
     register(userData: any): Promise<{
         message: string;
-        user: void;
+        user: import("../users/entities/usuario.entity").Usuario;
     }>;
     login(userData: any): Promise<{
         access_token: string;
-        user: any;
+        user: import("../users/entities/usuario.entity").Usuario;
     }>;
     profile(req: any): any;
     validateToken(authHeader: string): Promise<any>;

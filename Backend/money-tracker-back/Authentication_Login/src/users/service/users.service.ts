@@ -1,54 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { DataSnapshot, push, ref, set, get } from 'firebase/database';
-import { firebaseDataBase } from 'src/firebaseConfig';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Usuario } from '../entities/usuario.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-    async createUser(data: any): Promise<void> {
-        const dataRef = ref(firebaseDataBase, 'Users');
-        const newElementRef = push(dataRef, {dataRef: data});
-        await set(newElementRef, data);
-    }
+  constructor(
+    @InjectRepository(Usuario)
+    private readonly usuarioRepository: Repository<Usuario>,
+  ) {}
 
-    async getUsers(): Promise<any> {
-        const dataRef = ref(firebaseDataBase, 'Users');
-        const snapshot: DataSnapshot = await get(dataRef);
-        if (snapshot.exists()) {
-            return snapshot.val();
-        } else {
-            return null;
-        }
-    }
+  // Crear usuario
+  async createUser(data: Partial<Usuario>): Promise<Usuario> {
+    const newUser = this.usuarioRepository.create(data);
+    return this.usuarioRepository.save(newUser);
+  }
 
-    async getUserValidation(userEmail: string, userPass : string): Promise<any> {
-        const dataRef = ref(firebaseDataBase, 'Users');
-        const snapshot: DataSnapshot = await get(dataRef);
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            var user = null;
-            for (const userId in data) {
-                if (data[userId].email === userEmail && data[userId].password === userPass) {
-                    user = data[userId];
-                }
-            }
-            return user;
-        } else {
-            return null;
-        }
-    }
+  // Obtener todos los usuarios
+  async getUsers(): Promise<Usuario[]> {
+    return this.usuarioRepository.find();
+  }
 
-    async login(userData: any): Promise<any> {
-        const dataRef = ref(firebaseDataBase, 'Users');
-        const snapshot: DataSnapshot = await get(dataRef);
-        console.log('userData', userData);
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            for (const userId in data) {
-                if (data[userId].email === userData.email && data[userId].password === userData.password) {
-                    return data[userId];
-                }
-            }
-        }
-        return null;
+  // Validar usuario por correo
+  async getUserValidation(email: string): Promise<Usuario | null> {
+    return this.usuarioRepository.findOne({ where: { correoU: email } });
+  }
+
+  // Login basado en credenciales
+  async login(userData: { email: string; password: string }): Promise<Usuario | null> {
+    const user = await this.getUserValidation(userData.email);
+    if (user && (await bcrypt.compare(userData.password, user.passwordU))) {
+      return user;
     }
+    return null;
+  }
 }

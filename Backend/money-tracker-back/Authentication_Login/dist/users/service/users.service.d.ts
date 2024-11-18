@@ -1,6 +1,13 @@
+import { Repository } from 'typeorm';
+import { Usuario } from '../entities/usuario.entity';
 export declare class UsersService {
-    createUser(data: any): Promise<void>;
-    getUsers(): Promise<any>;
-    getUserValidation(userEmail: string, userPass: string): Promise<any>;
-    login(userData: any): Promise<any>;
+    private readonly usuarioRepository;
+    constructor(usuarioRepository: Repository<Usuario>);
+    createUser(data: Partial<Usuario>): Promise<Usuario>;
+    getUsers(): Promise<Usuario[]>;
+    getUserValidation(email: string): Promise<Usuario | null>;
+    login(userData: {
+        email: string;
+        password: string;
+    }): Promise<Usuario | null>;
 }

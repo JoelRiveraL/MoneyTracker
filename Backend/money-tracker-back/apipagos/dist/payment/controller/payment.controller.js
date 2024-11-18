@@ -36,9 +36,9 @@ let PaymentController = class PaymentController {
         const userId = request.user.sub;
         await this.paymentService.updatePayment({ ...data, userId }, id);
     }
-    async deleteData(data, request, id) {
+    async deleteData(request, id) {
         const userId = request.user.sub;
-        await this.paymentService.deletePayment({ ...data, userId }, id);
+        await this.paymentService.deletePayment(userId, id);
     }
 };
 exports.PaymentController = PaymentController;
@@ -81,11 +81,10 @@ __decorate([
 __decorate([
     (0, common_1.Delete)('deleteData/:id'),
     (0, common_1.UseGuards)(payment_guard_1.PaymentGuard),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Request)()),
-    __param(2, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], PaymentController.prototype, "deleteData", null);
 exports.PaymentController = PaymentController = __decorate([

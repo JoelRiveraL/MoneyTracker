@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   apipagos:
     build: 
@@ -9,10 +10,22 @@ services:
       - "3002:3000" 
     environment:
       - NODE_ENV=production
-      - JWT_SECRET=${JWT_SECRET} # Usa la variable de entorno definida en .env
+      - JWT_SECRET=${JWT_SECRET}
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=1234
+      - DB_NAME=MoneyTracker
     env_file: 
       - .env
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     restart: unless-stopped
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+

@@ -8,18 +8,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const app_controller_1 = require("./app.controller");
-const app_service_1 = require("./app.service");
+const typeorm_1 = require("@nestjs/typeorm");
+const auth_service_1 = require("./auth/auth.service");
 const users_module_1 = require("./users/users.module");
-const auth_module_1 = require("./auth/auth.module");
+const auth_controller_1 = require("./auth/auth.controller");
+const jwt_1 = require("@nestjs/jwt");
+const jwt_constant_1 = require("./auth/constants/jwt.constant");
+const usuario_entity_1 = require("./users/entities/usuario.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule, auth_module_1.AuthModule],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        imports: [
+            typeorm_1.TypeOrmModule.forRoot({
+                type: 'mysql',
+                host: process.env.DB_HOST,
+                port: +(process.env.DB_PORT || 3306),
+                username: process.env.DB_USER,
+                password: process.env.DB_PASSWORD || '',
+                database: process.env.DB_NAME,
+                entities: [usuario_entity_1.Usuario],
+                synchronize: true,
+            }),
+            jwt_1.JwtModule.register({
+                global: true,
+                secret: jwt_constant_1.jwtConstants.secret,
+                signOptions: { expiresIn: '3m' },
+            }),
+            users_module_1.UsersModule,
+        ],
+        controllers: [auth_controller_1.AuthController],
+        providers: [auth_service_1.AuthService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

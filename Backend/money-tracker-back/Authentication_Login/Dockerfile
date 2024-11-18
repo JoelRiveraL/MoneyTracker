@@ -7,13 +7,14 @@ WORKDIR /usr/src/app
 # Copia los archivos de package.json y package-lock.json para instalar dependencias
 COPY package*.json ./
 
-# Instala las dependencias
-RUN npm install --production
+# Instala las dependencias sin incluir devDependencies (si solo necesitas producción)
+RUN npm i
+RUN npm install bcrypt
 
 # Copia todo el resto del código fuente en el contenedor
 COPY . .
 
-# Compila el proyecto TypeScript a JavaScript
+# Si usas TypeScript, compila el proyecto a JavaScript
 RUN npm run build
 
 # Exponer el puerto en el que correrá la aplicación (puerto 3000 por defecto)

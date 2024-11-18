@@ -11,28 +11,28 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
+  // Crear un usuario
   @Post('createUser')
   async createUser(@Body() userData: any): Promise<{ message: string }> {
-    await this.usersService.createUser(userData);
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    await this.usersService.createUser({ ...userData, password: hashedPassword });
     return { message: 'Usuario creado exitosamente' };
   }
 
+  // Obtener todos los usuarios
   @Get('getUsers')
-  @UseGuards(AuthGuard)  // Protege esta ruta con el guard de JWT
+  @UseGuards(AuthGuard) // Ruta protegida con JWT
   async getUsers(): Promise<any> {
     return this.usersService.getUsers();
   }
 
+  // Login
   @Post('login')
   async login(@Body() userData: any): Promise<any> {
-    const user = await this.authService.login(     ///    async login({email, password}: any) //.login en vez de . validateUser
-      userData
-    );    
-
+    const user = await this.authService.login(userData);
     if (!user) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
-    console.log('User:', this.authService.login(user));
-    return this.authService.login(user);
-  }  
+    return user;
+  }
 }
