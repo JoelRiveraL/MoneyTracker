@@ -5,7 +5,6 @@ on:
     branches:
       - main
 
-
 jobs:
   build:
     name: Build and analyze
@@ -15,12 +14,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          
       - uses: SonarSource/sonarqube-scan-action@v4
         env:
-          SONAR_TOKEN: sqp_1e9f98c9211500c55f29a690a86e78922425136d
-          SONAR_HOST_URL: http://localhost:9000
-      # If you wish to fail your job when the Quality Gate is red, uncomment the
-      # following lines. This would typically be used to fail a deployment.
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          extra-options: '-X'  # Activa el modo de depuración
+      
+      # Si deseas verificar la puerta de calidad, descomenta el siguiente bloque:
       # - uses: SonarSource/sonarqube-quality-gate-action@v1
       #   timeout-minutes: 5
       #   env:
