@@ -95,59 +95,28 @@ const usersettings = () => {
     }
   };
 
-  const handleDeleteUser = async (userId: string) => {
-    const token = Cookies.get("token");
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
-    const confirmDelete = window.confirm(
-      "¿Estás seguro de que deseas eliminar este usuario?"
-    );
-    if (!confirmDelete) return;
-
-    try {
-      const response = await fetch(
-        `http://localhost:3003/users/deleteUser/${userId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.ok) {
-        console.log("Usuario eliminado con éxito");
-        router.push("/"); // Redirige al index
-      } else {
-        console.error("Error al eliminar usuario:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error al conectar con el servidor:", error);
-    }
-  };
-
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Mi Perfil" />
 
-        <div className="grid grid-cols-5 gap-8">
+        <div >
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Información Personal
+                  Información Personal
                 </h3>
               </div>
               <div className="p-7">
-                <form
+              <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     handleUpdateUser();
                   }}
                 >
+                  <div className="flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-full sm:w-1/2">
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-1/2">
                       <label
@@ -244,7 +213,7 @@ const usersettings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="emailAddress"
                     >
-                      Correo Electrónico
+                      Correo Electrónico
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -289,7 +258,7 @@ const usersettings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
                     >
-                      Biografía
+                      Biografía
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -328,13 +297,15 @@ const usersettings = () => {
                         name="bio"
                         id="bio"
                         rows={6}
-                        placeholder="Escribe algo sobre ti aquí"
+                        placeholder="Escribe algo sobre ti aquí"
                         defaultValue={userData.bio || ""}
                         onChange={handleChange}
                       ></textarea>
                     </div>
-                  </div>
-
+                      </div>
+                    </div>
+                  
+                  <div className="w-full sm:w-1/2">
                   <div className="col-span-5 xl:col-span-2">
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                       <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
@@ -431,7 +402,10 @@ const usersettings = () => {
                         )}
                       </div>
                     </div>
+                      </div>
+                    </div>
                   </div>
+                  <br></br>
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"

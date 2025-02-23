@@ -55,7 +55,7 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ userId, onClose }) =>
           >
             Eliminar
           </button>
-        </div>c
+        </div>
       </div>
     </div>
   );
