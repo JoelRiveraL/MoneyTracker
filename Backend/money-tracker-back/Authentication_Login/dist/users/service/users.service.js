@@ -57,6 +57,22 @@ let UsersService = class UsersService {
         }
         return null;
     }
+    async updateUser(id, userData) {
+        const userRef = (0, database_1.ref)(firebaseConfig_1.firebaseDataBase, `Users/${id}`);
+        const snapshot = await (0, database_1.get)(userRef);
+        if (!snapshot.exists()) {
+            throw new Error('Usuario no encontrado');
+        }
+        await (0, database_1.update)(userRef, userData);
+    }
+    async deleteUser(id) {
+        const userRef = (0, database_1.ref)(firebaseConfig_1.firebaseDataBase, `Users/${id}`);
+        const snapshot = await (0, database_1.get)(userRef);
+        if (!snapshot.exists()) {
+            throw new Error('Usuario no encontrado');
+        }
+        await (0, database_1.remove)(userRef);
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

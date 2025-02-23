@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSnapshot, push, ref, set, get } from 'firebase/database';
+import { DataSnapshot, push, ref, set, get, update, remove } from 'firebase/database';
 import { firebaseDataBase } from 'src/firebaseConfig';
 
 @Injectable()
@@ -20,15 +20,15 @@ export class UsersService {
         }
     }
 
-    async getUserValidation(userEmail: string, userPass : string): Promise<any> {
+    async getUserValidation(userEmail: string): Promise<any> { //Not users with email repeated
         const dataRef = ref(firebaseDataBase, 'Users');
         const snapshot: DataSnapshot = await get(dataRef);
         if (snapshot.exists()) {
             const data = snapshot.val();
             var user = null;
             for (const userId in data) {
-                if (data[userId].email === userEmail && data[userId].password === userPass) {
-                    user = data[userId];
+                if (data[userId].email === userEmail) {
+                    user = {id:userId, ...data[userId]};
                 }
             }
             return user;
@@ -37,18 +37,23 @@ export class UsersService {
         }
     }
 
-    async login(userData: any): Promise<any> {
-        const dataRef = ref(firebaseDataBase, 'Users');
-        const snapshot: DataSnapshot = await get(dataRef);
-        console.log('userData', userData);
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            for (const userId in data) {
-                if (data[userId].email === userData.email && data[userId].password === userData.password) {
-                    return data[userId];
-                }
-            }
+    async updateUser(id: string, userData: any): Promise<void> {
+        const userRef = ref(firebaseDataBase, `Users/${id}`);
+        const snapshot: DataSnapshot = await get(userRef);
+        if (!snapshot.exists()) {
+            throw new Error('Usuario no encontrado');
         }
-        return null;
+        await update(userRef, userData);
+    }
+
+    
+
+    async deleteUser(id: string): Promise<void> {
+        const userRef = ref(firebaseDataBase, `Users/${id}`);
+        const snapshot: DataSnapshot = await get(userRef);
+        if (!snapshot.exists()) {
+            throw new Error('Usuario no encontrado');
+        }
+        await remove(userRef);
     }
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Get, UnauthorizedException } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, UnauthorizedException, Put, Delete, Param } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { AuthService } from '../../auth/auth.service';
 import { AuthGuard } from '../../auth/guard/auth.guard';
@@ -25,14 +25,22 @@ export class UsersController {
 
   @Post('login')
   async login(@Body() userData: any): Promise<any> {
-    const user = await this.authService.login(     ///    async login({email, password}: any) //.login en vez de . validateUser
-      userData
-    );    
-
-    if (!user) {
-      throw new UnauthorizedException('Credenciales inválidas');
-    }
-    console.log('User:', this.authService.login(user));
-    return this.authService.login(user);
-  }  
+  
+    return this.authService.login(userData);
+  } 
+  
+  @Put('updateUser/:id')
+  @UseGuards(AuthGuard)
+  async updateUser(@Param('id') id: string, @Body() userData: any): Promise<{ message: string }> {
+    await this.usersService.updateUser(id, userData);
+    return { message: 'Usuario actualizado exitosamente' };
+  }
+  
+  @Delete('deleteUser/:id')
+  @UseGuards(AuthGuard)
+  async deleteUser(@Param('id') id: string): Promise<{ message: string }> {
+    await this.usersService.deleteUser(id);
+    return { message: 'Usuario eliminado exitosamente' };
+  }
+  
 }

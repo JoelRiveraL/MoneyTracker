@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { use } from 'passport';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/users/service/users.service';
 
 import * as bcryptjs from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
@@ -44,6 +44,7 @@ export class AuthService {
         }
 
         const payload = {
+            id: user.id,
             email: user.email,
             name: user.name,
             lastname: user.lastname, 

@@ -37,6 +37,14 @@ let UsersController = class UsersController {
         console.log('User:', this.authService.login(user));
         return this.authService.login(user);
     }
+    async updateUser(id, userData) {
+        await this.usersService.updateUser(id, userData);
+        return { message: 'Usuario actualizado exitosamente' };
+    }
+    async deleteUser(id) {
+        await this.usersService.deleteUser(id);
+        return { message: 'Usuario eliminado exitosamente' };
+    }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -60,6 +68,23 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "login", null);
+__decorate([
+    (0, common_1.Put)('updateUser/:id'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updateUser", null);
+__decorate([
+    (0, common_1.Delete)('deleteUser/:id'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "deleteUser", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService,

@@ -3,4 +3,6 @@ export declare class UsersService {
     getUsers(): Promise<any>;
     getUserValidation(userEmail: string, userPass: string): Promise<any>;
     login(userData: any): Promise<any>;
+    updateUser(id: string, userData: any): Promise<void>;
+    deleteUser(id: string): Promise<void>;
 }

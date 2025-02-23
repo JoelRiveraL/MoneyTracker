@@ -20,4 +20,5 @@ RUN npm run build
 EXPOSE 3000
 
 # Ejecuta la aplicación en modo de producción
-CMD ["npm", "run", "start:dev"]
+#CMD ["npm", "run", "start:dev"]
+CMD ["sh", "-c", "npm run build && npm run start:dev"]

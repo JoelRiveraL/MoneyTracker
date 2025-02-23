@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   autenticacionlogin:
@@ -13,9 +12,9 @@ services:
       - JWT_SECRET=${JWT_SECRET}
     env_file:
       - ./Authentication_Login/.env
-    volumes:
-      - ./Authentication_Login:/usr/src/app
-      - /usr/src/app/node_modules
+    # volumes:
+    #   - ./Authentication_Login:/usr/src/app
+    #   - /usr/src/app/node_modules
     restart: unless-stopped
 
   apipagos:

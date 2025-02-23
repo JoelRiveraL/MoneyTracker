@@ -9,4 +9,10 @@ export declare class UsersController {
     }>;
     getUsers(): Promise<any>;
     login(userData: any): Promise<any>;
+    updateUser(id: string, userData: any): Promise<{
+        message: string;
+    }>;
+    deleteUser(id: string): Promise<{
+        message: string;
+    }>;
 }
