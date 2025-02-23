@@ -50,6 +50,9 @@ export class UsersService {
 
     async deleteUser(id: string): Promise<void> {
         const userRef = ref(firebaseDataBase, `Users/${id}`);
+        console.log(id);
+
+        console.log(userRef);
         const snapshot: DataSnapshot = await get(userRef);
         if (!snapshot.exists()) {
             throw new Error('Usuario no encontrado');

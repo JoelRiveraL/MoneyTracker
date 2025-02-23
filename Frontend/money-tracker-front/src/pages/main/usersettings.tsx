@@ -3,11 +3,18 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import DeleteUserModal from "../../components/modals/DeleteUserModal"; // Asegúrate de importar el modal
 
 const usersettings = () => {
   const [user, setUser] = useState<any>({});
   const [userData, setUserData] = useState<any>({});
   const [isEditing, setIsEditing] = useState(false);
+  const [updateMessage, setUpdateMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
+  const router = useRouter();
+
   // Cargar datos del usuario desde localStorage
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -49,7 +56,7 @@ const usersettings = () => {
         ...prevData,
         photo: imageUrl, // Se guarda la URL temporalmente como blob, durante la sesion de navegacion, se puede hacer con "Firebase Storage"
       }));
-      console.log("Foto actualizada: ", imageUrl); 
+      console.log("Foto actualizada: ", imageUrl);
     }
     setIsEditing(false); // Ocultar el input de carga
   };
@@ -78,6 +85,8 @@ const usersettings = () => {
       if (response.ok) {
         console.log("Usuario actualizado con éxito");
         localStorage.setItem("user", JSON.stringify(userData)); // Actualizar localStorage
+        setUpdateMessage("Usuario actualizado con éxito");
+        setTimeout(() => setUpdateMessage(""), 3000); // Ocultar después de 3 segundos
       } else {
         console.error("Error al actualizar usuario:", response.statusText);
       }
@@ -92,6 +101,10 @@ const usersettings = () => {
       console.error("No token found");
       return;
     }
+    const confirmDelete = window.confirm(
+      "¿Estás seguro de que deseas eliminar este usuario?"
+    );
+    if (!confirmDelete) return;
 
     try {
       const response = await fetch(
@@ -106,6 +119,7 @@ const usersettings = () => {
 
       if (response.ok) {
         console.log("Usuario eliminado con éxito");
+        router.push("/"); // Redirige al index
       } else {
         console.error("Error al eliminar usuario:", response.statusText);
       }
@@ -434,12 +448,24 @@ const usersettings = () => {
 
                     <button
                       className="flex justify-center rounded bg-danger px-6 py-2 font-medium text-white hover:bg-red-600"
-                      onClick={() => handleDeleteUser(user.id)}
+                      onClick={() => setShowModal(true)}
                     >
                       Eliminar
                     </button>
                   </div>
                 </form>
+                {updateMessage && (
+                  <div className="mt-4 p-2 text-center bg-green-100 text-green-700 rounded">
+                    {updateMessage}
+                  </div>
+                )}
+
+                {showModal && (
+                  <DeleteUserModal
+                    userId={user.id}
+                    onClose={() => setShowModal(false)}
+                  />
+                )}
               </div>
             </div>
           </div>
