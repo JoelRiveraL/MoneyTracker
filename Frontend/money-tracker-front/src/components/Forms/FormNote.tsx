@@ -7,9 +7,11 @@ interface FormNoteProps {
   formType: "create" | "edit";
   note?: Note | null;
   onClose: () => void;
+  onNoteAdded?: () => void;
+
 }
 
-const FormNote: React.FC<FormNoteProps> = ({ formType, note, onClose }) => {
+const FormNote: React.FC<FormNoteProps> = ({ formType, note, onClose,onNoteAdded  }) => {
   // Si note es undefined (en el caso de "create"), inicializa los estados como valores vacíos
   const [noteId, setNoteId] = useState(note?.id || "");
   const [title, setTitle] = useState(note?.title || "");
@@ -62,6 +64,7 @@ const FormNote: React.FC<FormNoteProps> = ({ formType, note, onClose }) => {
         setMessageType("success");
         setTimeout(() => {
           onClose(); // Cierra el modal
+          onNoteAdded?.(); // Llamar a la función para actualizar las notas
         }, 2000);
       } else {
         console.error("Error:", response.statusText);

@@ -3,10 +3,20 @@ import Cookies from "js-cookie";
 import { Note } from "../../models/note";
 import FormNote from "../Forms/FormNote";
 
-const NotesDisplay: React.FC = () => {
+const NotesDisplay: React.FC<{ refresh: boolean }> = ({ refresh }) => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+  const [message, setMessage] = useState(""); 
+    const [refreshNotes, setRefreshNotes] = useState(false);
+  
+  useEffect(() => {
+    fetchNotes(); // Función que carga las notas
+  }, [refresh,refreshNotes]);
 
+  const handleNoteUpdated = () => {
+    setRefreshNotes((prev) => !prev);
+  };
+  
   const fetchNotes = async () => {
     const token = Cookies.get("token");
 
@@ -62,17 +72,24 @@ const NotesDisplay: React.FC = () => {
 
       if (response.ok) {
         console.log("Nota eliminada exitosamente");
+        setMessage("Nota eliminada exitosamente"); // Mostrar mensaje de éxito
+
+        setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId)); 
+
       } else {
         console.error("Error al eliminar la nota");
+        setMessage("Error al eliminar la nota");
+
       }
     } catch (error) {
       console.error("Error al conectar con el servidor:", error);
+      setMessage("Error al conectar con el servidor"); 
     }
+    setTimeout(() => setMessage(""), 3000); // Ocultar mensaje después de 3s
+
   }
 
-  useEffect(() => {
-    fetchNotes();
-  }, []);
+  
 
   const handleClose = () => {
     setSelectedNote(null); // Cierra el modal
@@ -86,6 +103,17 @@ const NotesDisplay: React.FC = () => {
   };
   return (
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      
+      {message && (
+      <div
+        className={`p-4 mb-4 text-center rounded-lg ${
+          message.includes("Error") ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"
+        }`}
+      >
+        {message}
+      </div>
+    )}
+    
       {notes.map((note) => (
         <div
           key={note.id}
@@ -114,7 +142,7 @@ const NotesDisplay: React.FC = () => {
         </div>
       ))}
       {selectedNote && (
-        <FormNote note={selectedNote} formType={"edit"} onClose={handleClose} />
+        <FormNote note={selectedNote} formType={"edit"} onClose={handleClose} onNoteAdded={handleNoteUpdated} />
       )}
     </div>
   );

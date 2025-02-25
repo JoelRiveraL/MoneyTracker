@@ -6,6 +6,7 @@ import FormNote from "../../components/Forms/FormNote";
 const Notes = () => {
   // Estado para controlar la visibilidad del modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [refreshNotes, setRefreshNotes] = useState(false);
 
   // Función para abrir el modal
   const handleOpen = () => {
@@ -15,6 +16,10 @@ const Notes = () => {
   // Función para cerrar el modal
   const handleClose = () => {
     setIsModalOpen(false);
+  };
+
+  const handleNoteAdded = () => {
+    setRefreshNotes((prev) => !prev); // Alterna el estado para forzar la recarga
   };
 
   return (
@@ -38,10 +43,11 @@ const Notes = () => {
             formType={"create"}
             note={undefined}
             onClose={handleClose}
+            onNoteAdded={handleNoteAdded}
           />
         )}
 
-        <NotesDisplay />
+        <NotesDisplay refresh={refreshNotes} />
       </div>
     </DefaultLayout>
   );
