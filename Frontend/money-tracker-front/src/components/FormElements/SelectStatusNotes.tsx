@@ -140,6 +140,7 @@ const SelectStatusNote: React.FC<SelectStatusProps> = ({ id, onChange }) => {
                           placeholder="Seleccione una opción"
                           className="h-full w-full appearance-none bg-transparent p-1 px-2 outline-none"
                           value=""
+                          required
                           readOnly
                         />
                       </div>
