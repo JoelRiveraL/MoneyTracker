@@ -178,6 +178,7 @@ const FormIncome = () => {
                 </label>
                 <input
                   type="text"
+                  id="name"
                   placeholder="De un nombre descriptivo a su ingreso/egreso"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -195,6 +196,7 @@ const FormIncome = () => {
                   Monto
                 </label>
                 <input
+                id="price"
                   type="number"
                   placeholder="Ingrese su monto en números"
                   value={price}
@@ -227,6 +229,7 @@ const FormIncome = () => {
                     Fecha Límite de la Deuda
                   </label>
                   <input
+                  id="dateLimit"
                     type="date"
                     value={dateLimit}
                     onChange={(e) => setDateLimit(e.target.value)}
@@ -256,6 +259,7 @@ const FormIncome = () => {
                   Descripción
                 </label>
                 <textarea
+                id="description"
                   rows={6}
                   placeholder="Ingrese una Descripción para controlar sus acciones financieras"
                   value={description}
@@ -282,12 +286,14 @@ const FormIncome = () => {
               </div>
               <div className="flex justify-end gap-4.5">
                 <button
+                id="cancelButton"
                   className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   type="button"
                 >
                   Cancelar
                 </button>
                 <button
+                  id="saveButton"
                   className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90 disabled:opacity-50"
                   type="submit"
                   disabled={Object.keys(errors).length > 0}
@@ -302,7 +308,7 @@ const FormIncome = () => {
       {message && (
         <div
           className={`alert ${
-            messageType === "success" ? "text-green-600" : "text-red-600"
+            messageType === "success" ? "text-green-500" : "text-red-500"
           }`}
         >
           {message}

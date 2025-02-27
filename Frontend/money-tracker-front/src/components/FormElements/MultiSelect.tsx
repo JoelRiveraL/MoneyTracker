@@ -82,10 +82,10 @@ const SingleSelect: React.FC<DropdownProps> = ({ id, onChange }) => {
       </label>
       <div>
         <select className="hidden" id={id}>
-          <option value="Ingreso">Ingreso</option>
-          <option value="Egreso">Egreso</option>
-          <option value="Deuda a Pagar">Deuda a Pagar</option>
-          <option value="Deuda a Cobrar">Deuda a Cobrar</option>
+          <option id="ingreso" value="Ingreso">Ingreso</option>
+          <option id="egreso" value="Egreso">Egreso</option>
+          <option id="deudAPagar"  value="Deuda a Pagar">Deuda a Pagar</option>
+          <option id="deudaACobrar" value="Deuda a Cobrar">Deuda a Cobrar</option>
         </select>
 
         <div className="flex flex-col items-center">

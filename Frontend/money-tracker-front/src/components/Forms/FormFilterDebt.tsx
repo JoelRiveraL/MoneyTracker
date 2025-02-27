@@ -37,6 +37,7 @@ const FormFilter: React.FC<FormFilterProps> = ({ onFilterChange }) => {
             Buscar Deuda
           </label>
           <input
+          id='nombreDeuda'
             type="text"
             placeholder="Nombre de la Deuda"
             value={name}
@@ -47,6 +48,7 @@ const FormFilter: React.FC<FormFilterProps> = ({ onFilterChange }) => {
         <div>
           <div className="flex flex-wrap gap-5 xl:gap-20 pt-7">
             <Link
+            id='buscarDeuda'
               href="#"
               className="inline-flex items-center justify-center rounded-md bg-meta-3 px-9 py-3 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
               onClick={(e) => {

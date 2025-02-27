@@ -304,7 +304,7 @@ const ModalFormEditPayment: React.FC<ModalFormEditPaymentProps> = ({
           {message && (
         <div
           className={`alert ${
-            messageType === "success" ? "text-green-600" : "text-red-600"
+            messageType === "success" ? "text-green-500" : "text-red-500"
           }`}
         >
           {message}

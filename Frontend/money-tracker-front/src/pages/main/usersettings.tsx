@@ -156,6 +156,7 @@ const usersettings = () => {
                           type="text"
                           name="name"
                           id="name"
+                          required
                           //defaultValue={user?.name}
                           value={userData.name || ""}
                           onChange={handleChange}
@@ -200,6 +201,8 @@ const usersettings = () => {
                           type="text"
                           name="lastname"
                           id="lastname"
+                          pattern="^[a-zA-ZñÑáéíóúÁÉÍÓÚ@.]+$"
+                          required
                           //defaultValue={user?.lastname}
                           defaultValue={userData.lastname || ""}
                           onChange={handleChange}
@@ -298,7 +301,9 @@ const usersettings = () => {
                         id="bio"
                         rows={6}
                         placeholder="Escribe algo sobre ti aquí"
+                       
                         defaultValue={userData.bio || ""}
+                        maxLength={500}
                         onChange={handleChange}
                       ></textarea>
                     </div>
@@ -317,7 +322,7 @@ const usersettings = () => {
                         <div className="mb-4 flex items-center gap-3">
                           <div className="h-14 w-14 rounded-full overflow-hidden">
                             <Image
-                              src={userData.photo || "/images/user/user-03.png"}
+                              src={userData.photo || ""}
                               width={55}
                               height={55}
                               alt="Usuario"
@@ -429,7 +434,7 @@ const usersettings = () => {
                   </div>
                 </form>
                 {updateMessage && (
-                  <div className="mt-4 p-2 text-center bg-green-100 text-green-700 rounded">
+                  <div className="mt-4 p-2 text-center bg-green-200 text-green-500 rounded">
                     {updateMessage}
                   </div>
                 )}

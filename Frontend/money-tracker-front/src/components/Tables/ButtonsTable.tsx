@@ -4,7 +4,7 @@ const ButtonsTable = ({ onClickDelete, onClickEdit}: {onClickDelete: () => void,
   return (
     <div>
         <div className="flex items-center space-x-3.5">
-                <button onClick={onClickDelete}  className="hover:text-primary">
+                <button id="deleteButton" onClick={onClickDelete}  className="hover:text-primary">
                     <svg
                         className="fill-current"
                         width="18"
@@ -30,7 +30,7 @@ const ButtonsTable = ({ onClickDelete, onClickEdit}: {onClickDelete: () => void,
                         />
                       </svg>
                     </button>
-                    <button onClick={onClickEdit} className="hover:text-primary">
+                    <button id="editButton" onClick={onClickEdit} className="hover:text-primary">
                     <svg
                         className="fill-current"
                         width="18"
